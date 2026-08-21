@@ -1,6 +1,6 @@
-export default {
-  async fetch(request) {
-    const html = `<!DOCTYPE html>
+const http = require('http');
+
+const htmlContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,7 +14,6 @@ export default {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* CSS RESET & VARIABLES */
         :root {
             --bg-green-light: #e8f5e9;
             --bg-green-subtle: #f1f8f3;
@@ -47,7 +46,6 @@ export default {
             position: relative;
         }
 
-        /* ANIMATED AMBIENT BACKGROUND ORBS (APPLE MOTION STYLE) */
         .ambient-bg {
             position: fixed;
             top: 0;
@@ -99,7 +97,6 @@ export default {
             100% { transform: translate(-40px, 40px) scale(0.95); }
         }
 
-        /* GLASSMORPHISM UTILITY WITH SMOOTH TRANSITION */
         .glass-panel {
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
@@ -128,7 +125,6 @@ export default {
             border-color: rgba(76, 175, 80, 0.5);
         }
 
-        /* HEADER & NAVIGATION */
         header {
             position: fixed;
             top: 20px;
@@ -202,7 +198,6 @@ export default {
             font-weight: 600;
         }
 
-        /* PAGE SECTIONS DISPLAY SYSTEM */
         .page-section {
             display: none;
             padding-top: 140px;
@@ -218,7 +213,6 @@ export default {
             animation: applePageIn 0.9s var(--apple-ease) forwards;
         }
 
-        /* APPLE-LIKE KEYFRAME ANIMATIONS */
         @keyframes applePageIn {
             0% { 
                 opacity: 0; 
@@ -248,7 +242,6 @@ export default {
             transform: translateY(0) scale(1);
         }
 
-        /* HERO SECTION (HOME) */
         .hero {
             text-align: center;
             padding: 70px 20px 40px;
@@ -298,10 +291,6 @@ export default {
             box-shadow: 0 18px 35px rgba(46, 125, 50, 0.35);
         }
 
-        .cta-btn:active {
-            transform: translateY(-1px) scale(0.98);
-        }
-
         .grid-3 {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -309,14 +298,12 @@ export default {
             margin-top: 50px;
         }
 
-        /* ABOUT PAGE */
         .about-content {
             padding: 50px;
             line-height: 1.8;
             font-size: 1.15rem;
         }
 
-        /* SERVICES PAGE */
         .service-card {
             padding: 35px;
         }
@@ -327,7 +314,6 @@ export default {
             color: var(--text-black);
         }
 
-        /* CONTACT FORM (ANONYMOUS RECEIVER) */
         .contact-container {
             max-width: 650px;
             margin: 0 auto;
@@ -379,7 +365,6 @@ export default {
             animation: applePageIn 0.5s var(--apple-ease);
         }
 
-        /* BLOG PAGE STYLES */
         .blog-container {
             padding: 55px;
             background: rgba(255, 255, 255, 0.75);
@@ -436,7 +421,6 @@ export default {
             color: var(--text-black);
         }
 
-        /* TESTIMONIAL BOX */
         .testimonial-box {
             background: rgba(46, 125, 50, 0.06);
             border-left: 4px solid var(--accent-green);
@@ -459,7 +443,6 @@ export default {
             color: var(--text-black);
         }
 
-        /* FAQ SECTION */
         .faq-item {
             margin-bottom: 22px;
             padding: 16px;
@@ -478,7 +461,6 @@ export default {
             margin-bottom: 6px;
         }
 
-        /* FOOTER */
         footer {
             text-align: center;
             padding: 40px 20px;
@@ -488,7 +470,6 @@ export default {
             border-top: 1px solid rgba(0,0,0,0.05);
         }
 
-        /* RESPONSIVE DESIGN */
         @media (max-width: 768px) {
             header {
                 flex-direction: column;
@@ -513,14 +494,12 @@ export default {
 </head>
 <body>
 
-    <!-- ANIMATED APPLE-STYLE AMBIENT BACKGROUND -->
     <div class="ambient-bg">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
     </div>
 
-    <!-- GLASS NAVIGATION HEADER -->
     <header class="glass-panel">
         <a href="#" class="logo" onclick="switchTab('home')">
             <span class="logo-badge"></span> EcoPest Pro
@@ -534,7 +513,6 @@ export default {
         </nav>
     </header>
 
-    <!-- 1. HOME PAGE SECTION -->
     <section id="home" class="page-section active-page">
         <div class="hero motion-reveal">
             <h1>Advanced Pest Solutions<br>With Zero Environmental Impact.</h1>
@@ -558,7 +536,6 @@ export default {
         </div>
     </section>
 
-    <!-- 2. ABOUT PAGE SECTION -->
     <section id="about" class="page-section">
         <div class="glass-panel about-content motion-reveal">
             <h2>About EcoPest Pro</h2>
@@ -571,7 +548,6 @@ export default {
         </div>
     </section>
 
-    <!-- 3. SERVICES PAGE SECTION -->
     <section id="services" class="page-section">
         <h2 style="font-size: 2.5rem; text-align: center; margin-bottom: 30px;" class="motion-reveal">Our Premium Services</h2>
         <div class="grid-3">
@@ -602,7 +578,6 @@ export default {
         </div>
     </section>
 
-    <!-- 4. BLOG PAGE SECTION (OVER 1200 WORDS WITH LONG ISLAND TESTIMONIAL & SPECIFIC LINK) -->
     <section id="blog" class="page-section">
         <div class="glass-panel blog-container motion-reveal">
             <h1>The Ultimate Guide to Modern Pest Eradication & Long Island Home Defense</h1>
@@ -683,7 +658,6 @@ export default {
         </div>
     </section>
 
-    <!-- 5. CONTACT PAGE SECTION (ANONYMOUS TO CUSTOMERS) -->
     <section id="contact" class="page-section">
         <div class="glass-panel contact-container motion-reveal">
             <h2 style="font-size: 2rem; text-align: center; margin-bottom: 10px;">Get in Touch</h2>
@@ -717,14 +691,11 @@ export default {
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
         <p>&copy; 2026 EcoPest Control Pro. All rights reserved. High-Performance Glassmorphic Motion Web Design.</p>
     </footer>
 
-    <!-- INTERACTIVE JAVASCRIPT & MOTION ENGINE -->
     <script>
-        // TAB / PAGE SWITCHING FUNCTIONALITY
         function switchTab(tabId) {
             const sections = document.querySelectorAll('.page-section');
             sections.forEach(sec => sec.classList.remove('active-page'));
@@ -746,7 +717,6 @@ export default {
             setTimeout(initScrollReveal, 100);
         }
 
-        // ANONYMOUS FORM HANDLING
         function handleFormSubmit(e) {
             e.preventDefault();
             
@@ -765,7 +735,6 @@ export default {
             }, 6000);
         }
 
-        // SCROLL REVEAL MOTION ENGINE
         function initScrollReveal() {
             const reveals = document.querySelectorAll('.motion-reveal');
             const observer = new IntersectionObserver((entries) => {
@@ -779,7 +748,6 @@ export default {
             reveals.forEach(el => observer.observe(el));
         }
 
-        // 3D TILT MOTION ON HOVER (APPLE PARALLAX EFFECT)
         document.addEventListener('mousemove', (e) => {
             const cards = document.querySelectorAll('.tilt-card');
             cards.forEach(card => {
@@ -797,7 +765,6 @@ export default {
             });
         });
 
-        // INITIALIZE ON LOAD
         window.addEventListener('DOMContentLoaded', () => {
             initScrollReveal();
         });
@@ -805,10 +772,12 @@ export default {
 </body>
 </html>`;
 
-    return new Response(html, {
-      headers: {
-        "content-type": "text/html;charset=UTF-8",
-      },
-    });
-  },
-};
+const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.end(htmlContent);
+});
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
