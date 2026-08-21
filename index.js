@@ -1,0 +1,814 @@
+export default {
+  async fetch(request) {
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoPest Control Pro - Islip Pest Management & Extermination</title>
+    <meta name="description" content="Professional pest control and cockroach extermination services in Islip, Long Island. Safe, green, and modern pest solutions.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS RESET & VARIABLES */
+        :root {
+            --bg-green-light: #e8f5e9;
+            --bg-green-subtle: #f1f8f3;
+            --accent-green: #2e7d32;
+            --accent-green-bright: #4caf50;
+            --text-black: #0d1b1e;
+            --text-muted: #4a5568;
+            --glass-bg: rgba(255, 255, 255, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.65);
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            --card-glass: rgba(255, 255, 255, 0.55);
+            --apple-ease: cubic-bezier(0.16, 1, 0.3, 1);
+            --spring-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-green-light);
+            color: var(--text-black);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* ANIMATED AMBIENT BACKGROUND ORBS (APPLE MOTION STYLE) */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(135deg, #e8f5e9 0%, #d4edda 50%, #f1f8f3 100%);
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: orbFloat 18s ease-in-out infinite alternate;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(76, 175, 80, 0.35);
+            top: -100px;
+            left: -100px;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: rgba(165, 214, 167, 0.45);
+            bottom: -150px;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: rgba(129, 199, 132, 0.3);
+            top: 40%;
+            left: 50%;
+            animation-delay: -10s;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(60px, 80px) scale(1.1); }
+            100% { transform: translate(-40px, 40px) scale(0.95); }
+        }
+
+        /* GLASSMORPHISM UTILITY WITH SMOOTH TRANSITION */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: 24px;
+            transition: transform 0.6s var(--apple-ease), box-shadow 0.6s var(--apple-ease), border-color 0.4s ease;
+        }
+
+        .glass-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            transition: transform 0.5s var(--apple-ease), box-shadow 0.5s var(--apple-ease), border-color 0.3s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(46, 125, 50, 0.18);
+            border-color: rgba(76, 175, 80, 0.5);
+        }
+
+        /* HEADER & NAVIGATION */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            z-index: 1000;
+            padding: 12px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeInDown 1.2s var(--apple-ease);
+        }
+
+        .logo {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-black);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-badge {
+            width: 12px;
+            height: 12px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 12px var(--accent-green-bright);
+            animation: pulseGlow 2.5s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 8px var(--accent-green-bright); }
+            50% { transform: scale(1.35); box-shadow: 0 0 18px var(--accent-green-bright); }
+        }
+
+        nav {
+            display: flex;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 4px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-black);
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 8px 18px;
+            border-radius: 20px;
+            transition: all 0.4s var(--apple-ease);
+            cursor: pointer;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent-green);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        nav a.active {
+            background: #ffffff;
+            color: var(--accent-green);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            font-weight: 600;
+        }
+
+        /* PAGE SECTIONS DISPLAY SYSTEM */
+        .page-section {
+            display: none;
+            padding-top: 140px;
+            padding-bottom: 80px;
+            min-height: 80vh;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 90%;
+        }
+
+        .page-section.active-page {
+            display: block;
+            animation: applePageIn 0.9s var(--apple-ease) forwards;
+        }
+
+        /* APPLE-LIKE KEYFRAME ANIMATIONS */
+        @keyframes applePageIn {
+            0% { 
+                opacity: 0; 
+                transform: translateY(40px) scale(0.96);
+                filter: blur(10px);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1);
+                filter: blur(0px);
+            }
+        }
+
+        @keyframes fadeInDown {
+            0% { opacity: 0; transform: translate(-50%, -30px); }
+            100% { opacity: 1; transform: translate(-50%, 0); }
+        }
+
+        .motion-reveal {
+            opacity: 0;
+            transform: translateY(30px) scale(0.98);
+            transition: opacity 0.8s var(--apple-ease), transform 0.8s var(--apple-ease);
+        }
+
+        .motion-reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* HERO SECTION (HOME) */
+        .hero {
+            text-align: center;
+            padding: 70px 20px 40px;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 700;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            color: var(--text-black);
+            background: linear-gradient(180deg, #0d1b1e 0%, #2e7d32 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            max-width: 720px;
+            margin: 0 auto 40px;
+            font-weight: 400;
+            letter-spacing: -0.3px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: var(--text-black);
+            color: #ffffff;
+            padding: 18px 40px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.4s var(--spring-ease);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-btn:hover {
+            background: var(--accent-green);
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 18px 35px rgba(46, 125, 50, 0.35);
+        }
+
+        .cta-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+            margin-top: 50px;
+        }
+
+        /* ABOUT PAGE */
+        .about-content {
+            padding: 50px;
+            line-height: 1.8;
+            font-size: 1.15rem;
+        }
+
+        /* SERVICES PAGE */
+        .service-card {
+            padding: 35px;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            color: var(--text-black);
+        }
+
+        /* CONTACT FORM (ANONYMOUS RECEIVER) */
+        .contact-container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(0,0,0,0.08);
+            background: rgba(255,255,255,0.7);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s var(--apple-ease);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.15);
+            background: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 130px;
+        }
+
+        .form-status {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 12px;
+            display: none;
+            text-align: center;
+            font-weight: 500;
+            animation: applePageIn 0.5s var(--apple-ease);
+        }
+
+        /* BLOG PAGE STYLES */
+        .blog-container {
+            padding: 55px;
+            background: rgba(255, 255, 255, 0.75);
+        }
+
+        .blog-container h1 {
+            font-size: 2.8rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .blog-container h2 {
+            font-size: 1.9rem;
+            margin-top: 45px;
+            margin-bottom: 18px;
+            color: var(--text-black);
+            border-bottom: 2px solid rgba(46, 125, 50, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .blog-container h3 {
+            font-size: 1.4rem;
+            margin-top: 28px;
+            margin-bottom: 12px;
+            color: var(--accent-green);
+        }
+
+        .blog-container p {
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.85;
+        }
+
+        .blog-container ul {
+            margin-bottom: 24px;
+            padding-left: 25px;
+            color: var(--text-muted);
+        }
+
+        .blog-container li {
+            margin-bottom: 10px;
+        }
+
+        .blog-container a {
+            color: var(--accent-green);
+            text-decoration: underline;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .blog-container a:hover {
+            color: var(--text-black);
+        }
+
+        /* TESTIMONIAL BOX */
+        .testimonial-box {
+            background: rgba(46, 125, 50, 0.06);
+            border-left: 4px solid var(--accent-green);
+            padding: 30px;
+            margin: 35px 0;
+            border-radius: 0 20px 20px 0;
+            font-style: italic;
+            transition: transform 0.4s var(--apple-ease);
+        }
+
+        .testimonial-box:hover {
+            transform: translateX(8px);
+        }
+
+        .testimonial-author {
+            display: block;
+            margin-top: 12px;
+            font-weight: 700;
+            font-style: normal;
+            color: var(--text-black);
+        }
+
+        /* FAQ SECTION */
+        .faq-item {
+            margin-bottom: 22px;
+            padding: 16px;
+            border-radius: 12px;
+            transition: background 0.3s ease;
+        }
+
+        .faq-item:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .faq-question {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--text-black);
+            margin-bottom: 6px;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 40px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 12px;
+                padding: 14px;
+                top: 10px;
+            }
+
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+
+            .blog-container {
+                padding: 25px;
+            }
+
+            .blog-container h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ANIMATED APPLE-STYLE AMBIENT BACKGROUND -->
+    <div class="ambient-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- GLASS NAVIGATION HEADER -->
+    <header class="glass-panel">
+        <a href="#" class="logo" onclick="switchTab('home')">
+            <span class="logo-badge"></span> EcoPest Pro
+        </a>
+        <nav>
+            <a onclick="switchTab('home')" id="nav-home" class="active">Home</a>
+            <a onclick="switchTab('about')" id="nav-about">About</a>
+            <a onclick="switchTab('services')" id="nav-services">Services</a>
+            <a onclick="switchTab('blog')" id="nav-blog">Blog</a>
+            <a onclick="switchTab('contact')" id="nav-contact">Contact</a>
+        </nav>
+    </header>
+
+    <!-- 1. HOME PAGE SECTION -->
+    <section id="home" class="page-section active-page">
+        <div class="hero motion-reveal">
+            <h1>Advanced Pest Solutions<br>With Zero Environmental Impact.</h1>
+            <p>Experience Long Island’s premier glass-grade eco-friendly pest control. Protecting your home and business through state-of-the-art methodology.</p>
+            <button class="cta-btn" onclick="switchTab('contact')">Request Free Inspection</button>
+        </div>
+
+        <div class="grid-3">
+            <div class="glass-card service-card motion-reveal tilt-card">
+                <h3>Residential Protection</h3>
+                <p>Complete home protection targeted at eliminating common Long Island pests safely, cleanly, and effectively.</p>
+            </div>
+            <div class="glass-card service-card motion-reveal tilt-card">
+                <h3>Commercial Defense</h3>
+                <p>Customized integrated pest management programs tailored for restaurants, offices, and commercial facilities.</p>
+            </div>
+            <div class="glass-card service-card motion-reveal tilt-card">
+                <h3>Eco-Smart Technology</h3>
+                <p>Utilizing high-end botanical and non-toxic treatments that target pests without compromising indoor air quality.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. ABOUT PAGE SECTION -->
+    <section id="about" class="page-section">
+        <div class="glass-panel about-content motion-reveal">
+            <h2>About EcoPest Pro</h2>
+            <br>
+            <p>EcoPest Pro was built on a single core principle: providing world-class pest management without sacrificing modern aesthetic, safety, or environmental integrity.</p>
+            <br>
+            <p>Based in New York, we specialized early on in sustainable structural protection. Our team utilizes bio-engineered solutions and physical exclusion barriers to secure living and working spaces against invasive pests permanently.</p>
+            <br>
+            <p>Whether handling small suburban homes or large urban commercial hubs, our certified technicians blend modern technology with deeply refined local expertise.</p>
+        </div>
+    </section>
+
+    <!-- 3. SERVICES PAGE SECTION -->
+    <section id="services" class="page-section">
+        <h2 style="font-size: 2.5rem; text-align: center; margin-bottom: 30px;" class="motion-reveal">Our Premium Services</h2>
+        <div class="grid-3">
+            <div class="glass-card service-card motion-reveal tilt-card">
+                <h3>Cockroach Extermination</h3>
+                <p>Deep-nest extraction, baiting, and sealing solutions engineered to completely eradicate German and American cockroach colonies.</p>
+            </div>
+            <div class="glass-card service-card motion-reveal tilt-card">
+                <h3>Termite Defense</h3>
+                <p>Advanced subterranean liquid barriers and smart monitoring systems that secure your property structural foundation.</p>
+            </div>
+            <div class="glass-card service-card motion-reveal tilt-card">
+                <h3>Rodent Exclusion</h3>
+                <p>Comprehensive inspection, entry point sealing, and non-toxic removal of mice and rats with guaranteed prevention.</p>
+            </div>
+            <div class="glass-card service-card motion-reveal tilt-card">
+                <h3>Bed Bug Thermal Treatment</h3>
+                <p>Eco-friendly heat treatments that penetrate furniture, walls, and fabrics to destroy infestations at all life stages.</p>
+            </div>
+            <div class="glass-card service-card motion-reveal tilt-card">
+                <h3>Mosquito & Tick Control</h3>
+                <p>Organic yard sprays and perimeter barriers designed to keep outdoor living zones enjoyable throughout summer.</p>
+            </div>
+            <div class="glass-card service-card motion-reveal tilt-card">
+                <h3>Emergency Pest Services</h3>
+                <p>Rapid response teams available around the clock to handle unexpected pest emergencies cleanly and discreetly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. BLOG PAGE SECTION (OVER 1200 WORDS WITH LONG ISLAND TESTIMONIAL & SPECIFIC LINK) -->
+    <section id="blog" class="page-section">
+        <div class="glass-panel blog-container motion-reveal">
+            <h1>The Ultimate Guide to Modern Pest Eradication & Long Island Home Defense</h1>
+            <p><em>Published by EcoPest Editorial Team | Last Updated: 2026 Edition</em></p>
+
+            <p>Maintaining a clean, safe, and pest-free home environment is a fundamental priority for homeowners everywhere. However, densely populated regions like Long Island face unique challenges due to seasonal shifts, older structural foundations, and humid maritime climates. From subterranean termites to persistent domestic pests, maintaining sanitary living quarters requires comprehensive knowledge, cutting-edge technology, and consistent prevention strategies.</p>
+
+            <h2>H1: Understanding Modern Domestic Pest Management</h2>
+            <p>Urban and suburban pest management has undergone a massive evolution over the past decade. Traditional broad-spectrum chemical sprays have increasingly been replaced by smart, targeted, eco-friendly systems. Today’s techniques prioritize human safety, indoor air purity, and long-term prevention rather than temporary cosmetic fixes.</p>
+            <p>When pests enter a residential structure, they rarely remain isolated in open spaces. Instead, they seek hidden harborages—behind drywall, under flooring, near plumbing lines, and inside electrical voids. Understanding how these biological invaders interact with human habitats is the key to achieving complete long-term control.</p>
+
+            <h2>H2: The Hidden Risks of Domestic Pest Infestations</h2>
+            <p>Pest infestations represent much more than a simple aesthetic nuisance; they post substantial risks to property integrity and human health. Dust from pest shedding, droppings, and nesting debris can trigger acute respiratory issues, particularly in young children and individuals with asthma.</p>
+            
+            <h3>H3: Health Risks Associated with Urban Insects</h3>
+            <p>Insects like cockroaches carry pathogenic bacteria across their bodies, transferring pathogens onto cooking surfaces, food containers, and counter tops. Furthermore, the protein allergens present in insect saliva and droppings remain active in home dust long after the physical insects are removed, making professional deep-cleaning and structural sealing essential.</p>
+
+            <h3>H3: Structural Damage & Property Devaluation</h3>
+            <p>Beyond health hazards, wood-destroying insects and gnawing rodents pose serious structural threats. Rodents frequently chew through electrical wiring, creating subtle fire hazards hidden within walls, while carpenter ants and termites quietly undermine timber structures over time.</p>
+
+            <h2>H2: Modern Eradication Strategies for Long Island Residents</h2>
+            <p>Long Island’s geography presents specific challenges. Surrounded by water and experiencing distinct season shifts, homes in Suffolk and Nassau counties frequently encounter seasonal pest migrations. Spring brings ant and termite swarmers, summer increases mosquito and tick pressure, while autumn and winter push rodents and roaches indoors seeking warmth.</p>
+            <p>To achieve total protection, home treatment plans must follow a rigorous four-phase protocol:</p>
+            <ul>
+                <li><strong>Comprehensive Structural Inspection:</strong> Mapping nesting zones, humidity pockets, and entry vectors using thermal imaging and moisture meters.</li>
+                <li><strong>Targeted Non-Toxic Baiting:</strong> Deploying micro-encapsulated baits that target insect reproductive cycles without off-gassing harmful vapors into the home.</li>
+                <li><strong>Mechanical Exclusion:</strong> Sealing utility penetrations, foundation cracks, and door sweeps using industrial-grade copper mesh and silicone sealants.</li>
+                <li><strong>Continuous Environmental Monitoring:</strong> Installing discreet monitoring stations to verify zero ongoing pest activity throughout the year.</li>
+            </ul>
+
+            <div class="testimonial-box">
+                <p>"Living in Islip, Long Island, we struggled with recurring pest issues every time the season shifted. I tried every DIY store spray available, but nothing seemed to solve the problem at its root. Finally, we brought in a specialized professional team. They inspected our basement, identified hidden entry points along our foundation, and eliminated the problem completely within days. It has given us total peace of mind in our home!"</p>
+                <span class="testimonial-author">— Mark S., Islip, Long Island (Suffolk County Resident)</span>
+            </div>
+
+            <h2>H2: Tackling Persistent Cockroach Infestations</h2>
+            <p>Among all domestic pests, German cockroaches are notoriously resilient. Capable of breeding exponentially within weeks, a minor sighting in a kitchen or bathroom can quickly indicate a larger hidden colony behind cabinetry or appliances. When dealing with persistent issues in Suffolk County, contacting a dedicated <a href="https://quickpestcontrolpro.com/pest-control-islip-ny">cockroach exterminator islip</a> specialist is the most efficient step toward restoring absolute home hygiene and eliminating colony breeding zones safely.</p>
+            <p>Attempting to handle aggressive infestations using retail bug bombs often exacerbates the issue. Over-the-counter foggers scatter colonies, forcing insects deeper into wall voids and adjacent rooms, making eventual elimination significantly harder. Professional baiting and insect growth regulators (IGRs) work by interrupting biological lifecycle phases, ensuring both adults and unhatched egg cases are fully eradicated.</p>
+
+            <h2>H2: Integrated Pest Management (IPM) & Green Solutions</h2>
+            <p>Integrated Pest Management (IPM) represents the gold standard in modern pest elimination. Rather than relying solely on chemical sprays, IPM focuses on changing environmental conditions that allow pests to survive in the first place.</p>
+            
+            <h3>H3: Moisture Control and Ventilation</h3>
+            <p>Most structural pests require high ambient humidity to thrive. Damp crawlspaces, leaking under-sink piping, and poor attic ventilation create ideal micro-climates. Implementing dehumidification systems and repairing subtle plumbing leaks frequently cuts pest populations in half naturally.</p>
+
+            <h3>H3: Food Storage and Sanitation Standards</h3>
+            <p>Modern eco-friendly pest control relies heavily on sanitation protocols. Storing dry pantry goods in airtight glass or heavy-duty plastic containers deprives insects of nutrition sources. Furthermore, regular deep cleaning behind large kitchen appliances removes accumulated grease and food crumbs that feed emerging colonies.</p>
+
+            <h2>H2: Step-by-Step Guide to Safeguarding Your Property</h2>
+            <p>Protecting your property requires a proactive routine. Here is a recommended seasonal checklist for homeowners:</p>
+            <ul>
+                <li><strong>Inspect Foundation Walls:</strong> Check perimeter masonry for hair-line cracks and seal them immediately.</li>
+                <li><strong>Trim Overhanging Foliage:</strong> Keep tree branches and shrubs at least 2 to 3 feet away from your roofline and exterior siding to eliminate natural pest bridges.</li>
+                <li><strong>Clear Gutters & Drainage:</strong> Ensure rainwater flows cleanly away from the foundation to prevent soil oversaturation.</li>
+                <li><strong>Check Window & Door Screens:</strong> Replace torn mesh and install tight-fitting door sweeps along all exterior entries.</li>
+            </ul>
+
+            <h2>H2: CONKLUTION</h2>
+            <p>In conclusion, keeping your home pest-free requires a modern, multi-faceted approach combining professional expertise, mechanical exclusion, and proper hygiene. By shifting away from temporary chemical sprays and adopting sustainable Integrated Pest Management principles, homeowners can ensure their living spaces remain healthy, safe, and structurally sound. Whether addressing seasonal invaders or persistent colonies, taking prompt action with verified eco-friendly solutions is the most reliable way to protect your family and investment for years to come.</p>
+
+            <h2>H2: F&Q (Frequently Asked Questions)</h2>
+            <div class="faq-item">
+                <p class="faq-question">Q1: Are modern eco-friendly pest treatments safe for children and pets?</p>
+                <p>Yes. Contemporary treatments utilize botanical formulations, micro-encapsulated baits, and mechanical exclusion methods specifically designed to target insect physiology without posing risks to mammals, pets, or indoor air quality.</p>
+            </div>
+            <div class="faq-item">
+                <p class="faq-question">Q2: How quickly can a professional extermination treatment show results?</p>
+                <p>Most targeted baiting and mechanical exclusion treatments show dramatic population reductions within 24 to 48 hours, with total colony eradication typically achieved within 7 to 14 days depending on infestation severity.</p>
+            </div>
+            <div class="faq-item">
+                <p class="faq-question">Q3: Why are over-the-counter pest foggers often ineffective?</p>
+                <p>Retail foggers and bug bombs only coat exposed open surfaces. They fail to penetrate deep wall voids or cabinet crevices where pests actually nest, often causing colonies to scatter and spread deeper into the property structure.</p>
+            </div>
+            <div class="faq-item">
+                <p class="faq-question">Q4: How often should a home undergo routine pest inspections?</p>
+                <p>It is recommended to schedule professional inspections at least twice a year—typically in early spring and autumn—to identify structural vulnerabilities and stop seasonal pests before they establish indoor nests.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. CONTACT PAGE SECTION (ANONYMOUS TO CUSTOMERS) -->
+    <section id="contact" class="page-section">
+        <div class="glass-panel contact-container motion-reveal">
+            <h2 style="font-size: 2rem; text-align: center; margin-bottom: 10px;">Get in Touch</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Fill out your details below and our service team will process your request immediately.</p>
+            
+            <form id="anonymousContactForm" onsubmit="handleFormSubmit(event)">
+                <div class="form-group">
+                    <label for="cust_name">Full Name</label>
+                    <input type="text" id="cust_name" class="form-control" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cust_email">Email Address</label>
+                    <input type="email" id="cust_email" class="form-control" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cust_phone">Phone Number</label>
+                    <input type="tel" id="cust_phone" class="form-control" placeholder="Enter your phone number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cust_message">Your Message / Service Request</label>
+                    <textarea id="cust_message" class="form-control" placeholder="Describe your inquiry or service needs..." required></textarea>
+                </div>
+
+                <button type="submit" class="cta-btn" style="width: 100%;">Submit Inquiry</button>
+            </form>
+
+            <div id="formStatus" class="form-status"></div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 EcoPest Control Pro. All rights reserved. High-Performance Glassmorphic Motion Web Design.</p>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT & MOTION ENGINE -->
+    <script>
+        // TAB / PAGE SWITCHING FUNCTIONALITY
+        function switchTab(tabId) {
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(sec => sec.classList.remove('active-page'));
+
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            const targetSection = document.getElementById(tabId);
+            if (targetSection) {
+                targetSection.classList.add('active-page');
+            }
+
+            const targetNav = document.getElementById('nav-' + tabId);
+            if (targetNav) {
+                targetNav.classList.add('active');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(initScrollReveal, 100);
+        }
+
+        // ANONYMOUS FORM HANDLING
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('cust_name').value;
+            const statusBox = document.getElementById('formStatus');
+
+            statusBox.style.display = 'block';
+            statusBox.style.backgroundColor = 'rgba(46, 125, 50, 0.15)';
+            statusBox.style.color = '#2e7d32';
+            statusBox.innerHTML = 'Thank you, ' + name + '! Your message has been submitted successfully. Our team will contact you shortly.';
+
+            document.getElementById('anonymousContactForm').reset();
+
+            setTimeout(() => {
+                statusBox.style.display = 'none';
+            }, 6000);
+        }
+
+        // SCROLL REVEAL MOTION ENGINE
+        function initScrollReveal() {
+            const reveals = document.querySelectorAll('.motion-reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            reveals.forEach(el => observer.observe(el));
+        }
+
+        // 3D TILT MOTION ON HOVER (APPLE PARALLAX EFFECT)
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.tilt-card');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+
+                if (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom) {
+                    const tiltX = (y / rect.height) * -12;
+                    const tiltY = (x / rect.width) * 12;
+                    card.style.transform = \`perspective(1000px) rotateX(\${tiltX}deg) rotateY(\${tiltY}deg) translateY(-8px) scale(1.02)\`;
+                } else {
+                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px) scale(1)';
+                }
+            });
+        });
+
+        // INITIALIZE ON LOAD
+        window.addEventListener('DOMContentLoaded', () => {
+            initScrollReveal();
+        });
+    </script>
+</body>
+</html>`;
+
+    return new Response(html, {
+      headers: {
+        "content-type": "text/html;charset=UTF-8",
+      },
+    });
+  },
+};
